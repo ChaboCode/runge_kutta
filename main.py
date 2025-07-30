@@ -11,9 +11,11 @@ def root_page():
 @app.get("/grunt-kutta")
 def grunt_kutta_route(f_str: str, x0: float, y0: float, h: float, end: float):
     f = eval(f'lambda x, y: {f_str}')
-    return runge_kutta(f, x0, y0, h, end)
+    result, y = runge_kutta(f, x0, y0, h, end)
+    return {"result": result, "steps": y}
 
 def runge_kutta(f, x0, y0, h, end):
+  y = [y0]
   yn = y0
   for i in np.arange(x0, end, h):
     xn = i
@@ -30,6 +32,7 @@ def runge_kutta(f, x0, y0, h, end):
     # print('k4: ', k4)
 
     yn = yn + (h/6) *(k1 + 2 * k2 + 2 * k3 + k4)
+    y.append(yn)
     # print('yn: ', yn)
-  return yn
+  return yn, y
 
