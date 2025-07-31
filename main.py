@@ -1,8 +1,15 @@
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 import numpy as np
 from math import *
 
 app  = FastAPI()
+
+app.add_middleware(
+  CORSMiddleware,
+  allow_origins=['*'],
+  allow_headers=['*'],
+)
 
 @app.get("/")
 def root_page():
