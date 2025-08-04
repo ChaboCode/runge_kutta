@@ -1,7 +1,10 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
+
 import numpy as np
+import matplotlib.pyplot as plt
 from math import *
+import io
 
 app  = FastAPI()
 
@@ -20,6 +23,23 @@ def grunt_kutta_route(f_str: str, x0: float, y0: float, h: float, end: float):
     f = eval(f'lambda x, y: {f_str}')
     result, y = runge_kutta(f, x0, y0, h, end)
     return {"result": result, "steps": y}
+
+@app.get("/img")
+def runge_kutta_pic(f_str: str, x0: float, y0: float, h: float, end: float):
+    f = eval(f'lambda x, y: {f_str}')
+    result, y = runge_kutta(f, x0, y0, h, end)
+    x = np.arange(x0, end +h, h)
+
+    fig, ax = plt.subplots()
+    # ax.set_title("Te quedas pen de jo")
+    ax.plot(x, y)
+    buf = io.BytesIO()
+    fig.savefig(buf, format="png")
+    plt.close(fig)
+    buf.seek(0)
+
+    return Response(content=buf.getvalue(), media_type="image/png")
+
 
 def runge_kutta(f, x0, y0, h, end):
   y = [y0]
