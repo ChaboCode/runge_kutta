@@ -51,6 +51,7 @@ def runge_kutta_pic(f_str: str, x0: float, y0: float, steps: int, end: float):
     f_poly, x_poly, y_poly = approximate(x, y)
     print(f_poly)
     ax.plot(x_poly, y_poly, "-")
+    ax.set_title(f"{f_poly}")
     ax.grid()
 
     buf = io.BytesIO()
