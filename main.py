@@ -32,6 +32,7 @@ def grunt_kutta_route(f_str: str, x0: float, y0: float, steps: int, end: float):
         "k2": k2,
         "k3": k3,
         "k4": k4,
+        "xn": list(np.arange(x0, end +h, h)),
     }
 
 
